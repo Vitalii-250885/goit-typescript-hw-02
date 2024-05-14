@@ -1,14 +1,18 @@
+import { FormEvent, FC, useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import toast from 'react-hot-toast';
 
 import css from './SearchBar.module.css';
 
-const SearchBar = ({ handleUpdatePage }) => {
-  const hendleSubmit = e => {
+type SearchBarProps = {
+  handleUpdatePage: (query: string) => void;
+};
+
+const SearchBar: FC<SearchBarProps> = ({ handleUpdatePage }) => {
+  const [query, setQuery] = useState<string>('');
+
+  const hendleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target;
-    const { input } = form.elements;
-    const query = input.value;
 
     if (query === '') {
       notification();
@@ -34,6 +38,7 @@ const SearchBar = ({ handleUpdatePage }) => {
           autoFocus
           placeholder="Search images and photos"
           className={css.input}
+          onChange={e => setQuery(e.target.value)}
         />
       </form>
     </header>

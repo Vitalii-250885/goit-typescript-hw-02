@@ -1,6 +1,12 @@
+import { FC } from 'react';
+
 import css from './LoadMoreBtn.module.css';
 
-const LoadMoreBtn = ({ hendleLoadMore }) => {
+type LoadMoreBtnProps = {
+  hendleLoadMore: () => void;
+};
+
+const LoadMoreBtn: FC<LoadMoreBtnProps> = ({ hendleLoadMore }) => {
   return (
     <button type="submit" className={css.button} onClick={hendleLoadMore}>
       Load more

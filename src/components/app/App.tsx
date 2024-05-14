@@ -10,30 +10,30 @@ import Loader from '../loader/Loader.jsx';
 import ErrorMessage from '../errorMessage/ErrorMessage.jsx';
 import ImageModal from '../imageModal/ImageModal.jsx';
 
+import { Image } from '../../types.js';
+
 import './App.css';
 
 function App() {
-  const [page, setPage] = useState(1);
-  const [loader, setLoader] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [images, setImages] = useState([]);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [regular, setRegular] = useState('');
-  const [showBtn, setShowBtn] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [images, setImages] = useState<Image[]>([]);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [regular, setRegular] = useState<string>('');
+  const [showBtn, setShowBtn] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('');
 
-  const [query, setQuery] = useState('');
-
-  const handleUpdatePage = query => {
+  const handleUpdatePage = (query: string): void => {
     setQuery(query);
     setPage(1);
     setImages([]);
   };
-
-  const load = async (query, page) => {
+  const load = async (query: string, page: number) => {
     try {
       setLoader(true);
       const data = await fetchPhoto(query, page);
-      const results = data.data.results;
+      const results: Image[] = data.data.results;
 
       setShowBtn(data.data.total_pages && data.data.total_pages !== page);
 
@@ -51,16 +51,16 @@ function App() {
     load(query, page);
   }, [query, page]);
 
-  const openModal = regular => {
+  const openModal = (regular: string): void => {
     setRegular(regular);
     setIsOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsOpen(false);
   };
 
-  const hendleLoadMore = () => {
+  const hendleLoadMore = (): void => {
     setPage(page + 1);
   };
 
