@@ -12,10 +12,12 @@ import ImageModal from '../imageModal/ImageModal.jsx';
 
 import { Image } from '../../types.js';
 
+import { Res } from './App.types.js';
+
 import './App.css';
 
 function App() {
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const [images, setImages] = useState<Image[]>([]);
@@ -32,15 +34,20 @@ function App() {
   const load = async (query: string, page: number) => {
     try {
       setLoader(true);
-      const data = await fetchPhoto(query, page);
-      const results: Image[] = data.data.results;
+      const data = await fetchPhoto<Res>(query, page);
+      const results = data.results;
 
-      setShowBtn(data.data.total_pages && data.data.total_pages !== page);
+      setShowBtn(Boolean(data.total_pages && data.total_pages !== page));
 
       setImages([...images, ...results]);
       setErrorMessage(false);
       return;
     } catch (error) {
+      if (query === '') {
+        setErrorMessage(false);
+        return;
+      }
+
       setErrorMessage(true);
     } finally {
       setLoader(false);
